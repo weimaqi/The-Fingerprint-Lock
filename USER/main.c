@@ -444,7 +444,7 @@ int main(void)
 	delay_init(168);  	//初始化延时函数
 	KeyBoardIni();
 	OLED_Init();			//初始化OLED  
-	OLED_Clear()  	; 
+	OLED_Clear(); 
 	uart_init(115200);	//初始化串口1波特率为115200，用于支持USMART
 	usart2_init(usart2_baund);//初始化串口2,用于与指纹模块通讯
 	usart3_init(usart3_baund);

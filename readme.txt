@@ -1,3 +1,22 @@
 基于嵌入式的网络视频通信指纹锁
 @target: 大一项目
 @version: 标准库版本
+@Pin:
+	A6  指纹锁触摸感应
+	B12 OLED CLK
+	B13 OLED DIN
+	B14 OLED RES
+	B15 OLED DC
+	D0  矩阵键盘
+	D1
+	D2
+	D3
+	D4
+	D5
+	D6
+	D7
+	D10 OLED CS
+	E3  Key1
+	E4  Key0
+	F9  Led1
+	F10 Led2

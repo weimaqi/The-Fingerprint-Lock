@@ -1,0 +1,8 @@
+
+*.d
+*.o
+*.crf
+*.htm
+OBJ/AS608.sct
+OBJ/AS608_AS608.dep
+OBJ/startup_stm32f40_41xxx.lst
