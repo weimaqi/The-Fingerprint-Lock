@@ -9,6 +9,7 @@
 	B13 OLED DIN D1
 	B14 OLED RES
 	B15 OLED DC
+	D10 OLED CS
 	D0  æÿ’Ûº¸≈Ã
 	D1
 	D2
@@ -17,8 +18,17 @@
 	D5
 	D6
 	D7
-	D10 OLED CS
 	E3  Key1
 	E4  Key0
 	F9  Led1
 	F10 Led2
+	
+	F0-F7 D0-D7
+	E1  SCL
+	C13 SDA
+	E0  WRST
+	E2  RRST
+	E4  WEN
+	E5  OE
+	E6  RCLK
+	E3  VSYNC

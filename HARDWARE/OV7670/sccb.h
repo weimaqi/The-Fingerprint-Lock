@@ -8,17 +8,17 @@
 //正点原子@ALIENTEK
 //技术论坛:www.openedv.com
 //创建日期:2015/1/18
-//版本：V1.0		    							    							  
+//版本：V1.0
 //////////////////////////////////////////////////////////////////////////////////
-  
-#define SCCB_SDA_IN()  {GPIOG->CRH&=0XFF0FFFFF;GPIOG->CRH|=0X00800000;}
-#define SCCB_SDA_OUT() {GPIOG->CRH&=0XFF0FFFFF;GPIOG->CRH|=0X00300000;}
 
-//IO操作函数	 
-#define SCCB_SCL    		PDout(3)	 	//SCL
-#define SCCB_SDA    		PGout(13) 		//SDA	 
+#define SCCB_SDA_IN()  {GPIOC->MODER&=0XF3FFFFFF;}
+#define SCCB_SDA_OUT() {GPIOC->MODER&=0XF3FFFFFF;GPIOE->MODER|=0X04000000;}
 
-#define SCCB_READ_SDA    	PGin(13)  		//输入SDA    
+//IO操作函数
+#define SCCB_SCL    		PEout(1)	 	//SCL
+#define SCCB_SDA    		PCout(13) 		//SDA
+
+#define SCCB_READ_SDA    	PCin(13)  		//输入SDA    
 #define SCCB_ID   			0X42  			//OV7670的ID
 
 ///////////////////////////////////////////
@@ -31,16 +31,3 @@ u8 SCCB_RD_Byte(void);
 u8 SCCB_WR_Reg(u8 reg,u8 data);
 u8 SCCB_RD_Reg(u8 reg);
 #endif
-
-
-
-
-
-
-
-
-
-
-
-
-

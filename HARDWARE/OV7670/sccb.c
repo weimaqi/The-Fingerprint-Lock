@@ -16,22 +16,23 @@
 void SCCB_Init(void)
 {			
  	GPIO_InitTypeDef  GPIO_InitStructure;
- 	
- 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD|RCC_APB2Periph_GPIOG, ENABLE);	 //使能PB端口时钟
-	
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13;				 // 端口配置
- 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; 		 //输入
- 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
- 	GPIO_Init(GPIOG, &GPIO_InitStructure);
- 	GPIO_SetBits(GPIOG,GPIO_Pin_13);						 // 输出高
 
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3;				 // 端口配置
- 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		 //输输出
- 	GPIO_Init(GPIOD, &GPIO_InitStructure);
- 	GPIO_SetBits(GPIOD,GPIO_Pin_3);						 // 输出高
- 
+ 	RCC_APB2PeriphClockCmd(RCC_AHB1Periph_GPIOE | RCC_AHB1Periph_GPIOC, ENABLE);	 //使能PB端口时钟
+
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13;				 // 端口配置
+ 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN; 		 //输入
+ 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ 	GPIO_Init(GPIOE, &GPIO_InitStructure);
+ 	GPIO_SetBits(GPIOC,GPIO_Pin_3);						 // 输出高
+
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;				 // 端口配置
+ 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT; 		 
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP; 		 //推挽输出
+ 	GPIO_Init(GPIOE, &GPIO_InitStructure);
+ 	GPIO_SetBits(GPIOE,GPIO_Pin_1);						 // 输出高
+
 	SCCB_SDA_OUT();	   
-}			 
+}
 
 //SCCB起始信号
 //当时钟为高的时候,数据线的高到低,为SCCB起始信号

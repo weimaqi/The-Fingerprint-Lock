@@ -25,36 +25,27 @@ u8 OV7670_Init(void)
 	u16 i=0;	  
 	//设置IO
  	GPIO_InitTypeDef  GPIO_InitStructure;
- 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA|RCC_APB2Periph_GPIOB|RCC_APB2Periph_GPIOC|RCC_APB2Periph_GPIOD|RCC_APB2Periph_GPIOG|RCC_APB2Periph_AFIO, ENABLE);	 //使能相关端口时钟
- 
-	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_8; 	//PA8 输入 上拉
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+ 	RCC_APB2PeriphClockCmd(RCC_AHB1Periph_GPIOE|RCC_AHB1Periph_GPIOB|RCC_AHB1Periph_GPIOC|RCC_AHB1Periph_GPIOD|RCC_AHB1Periph_GPIOG, ENABLE);	 //使能相关端口时钟
+
+	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_3; 	//PE3 输入 上拉
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
  	GPIO_Init(GPIOA, &GPIO_InitStructure);
-	GPIO_SetBits(GPIOA,GPIO_Pin_8);
-		
- 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3|GPIO_Pin_4;				 // 端口配置
- 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		 //推挽输出
- 	GPIO_Init(GPIOB, &GPIO_InitStructure);
- 	GPIO_SetBits(GPIOB,GPIO_Pin_3|GPIO_Pin_4);	
+	GPIO_SetBits(GPIOE,GPIO_Pin_3);
 
-	
-	GPIO_InitStructure.GPIO_Pin  = 0xff; //PC0~7 输入 上拉
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
- 	GPIO_Init(GPIOC, &GPIO_InitStructure);
-	 
-	
-  GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_6;  
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+	GPIO_InitStructure.GPIO_Pin  = 0xff; //PD0~7 输入 上拉
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
  	GPIO_Init(GPIOD, &GPIO_InitStructure);
-	GPIO_SetBits(GPIOD,GPIO_Pin_6);
+	 
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_2 | GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	GPIO_Init(GPIOE, &GPIO_InitStructure);
+	GPIO_SetBits(GPIOE, GPIO_Pin_0 | GPIO_Pin_2 | GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6);
 	
-	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_14|GPIO_Pin_15;  
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
- 	GPIO_Init(GPIOG, &GPIO_InitStructure);
-	GPIO_SetBits(GPIOG,GPIO_Pin_14|GPIO_Pin_15);
-	
-  GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable,ENABLE);	//SWD
+ // GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable,ENABLE);	//SWD
 
  	SCCB_Init();        		//初始化SCCB 的IO口	   	  
  	if(SCCB_WR_Reg(0x12,0x80))return 1;	//复位SCCB	  

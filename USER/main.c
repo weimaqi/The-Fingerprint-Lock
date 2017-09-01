@@ -10,6 +10,7 @@
 #include "malloc.h" 
 #include "oled.h"
 #include "esp8266.h"
+#include "ov7670.h"
 /***********************************************************/
 
 #define usart2_baund  57600//串口2波特率，根据指纹模块波特率更改
@@ -429,6 +430,38 @@ void Add_FR(void)   //录指纹
 	}
 }
 
+void RGB565_TO_BMP(u16 RGB565[240][320],u8 *BMP) //230454
+{
+ //BMP???
+ u8 HEADER[] = {
+  66,77,54,132,3,0,0,0,0,0,54,0,0,0,40,0,
+  0,0,64,1,0,0,240,0,0,0,1,0,24,0,0,0,
+  0,0,0,132,3,0,35,46,0,0,35,46,0,0,0,0,
+  0,0,0,0,0,0
+ };
+ u32 i = 0;
+ u8 RRED,RBLUE,RGREEN;
+ u16 COLOR;
+ 
+ //BMP?????
+ for (i = 0;i < 0X36;i++)
+ {
+  *BMP++ = *(HEADER + i);
+ }
+ 
+ //????
+ for (i = 0;i < 76800;i++)
+ {
+  COLOR = *(*(RGB565 + i / 320) + i % 320);
+  RRED = ((COLOR >> 8)) & 0xF8 + 3;
+  RBLUE = ((COLOR >> 3) & 0xFC) + 1;
+  RGREEN = ((COLOR << 3) & 0xF8) + 3;
+  *BMP++ = RBLUE;
+  *BMP++ = RGREEN;
+  *BMP++ = RRED;  
+ }
+}
+
 
 /***********************************************************/
 
@@ -441,6 +474,7 @@ int main(void)
 	u8 ensure;
 	u32 key;      //按键
 	char str[30];
+	u16 * bmp=(u16 *)mymalloc(SRAMIN,76800*2); //存放bmp color
 	delay_init(168);  	//初始化延时函数
 	KeyBoardIni();
 	OLED_Init();			//初始化OLED  
@@ -452,11 +486,16 @@ int main(void)
 //	usmart_dev.init(168);		//初始化USMART
 	my_mem_init(SRAMIN);		//初始化内部内存池 
 	my_mem_init(SRAMCCM);		//初始化CCM内存
+	W25QXX_Init();				//初始化W25Q128
 	OLED_ShowString(0,0,"1");
 	Esp8266Init();
 	OLED_ShowString(0,0,"2");
+	OV7670_Init();
+	TIM6_Int_Init(10000,7199);			//10Khz计数频率,1秒钟中断									  
+	EXTI8_Init();						//使能定时器捕获								  
+	OV7670_CS = 0;
 /*****************************/
-	
+
 	Led_Off(2);
 	Led_Off(1);
 	while(PS_HandShake(&AS608Addr)){//与AS608模块握手

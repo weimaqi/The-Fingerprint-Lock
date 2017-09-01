@@ -12,16 +12,16 @@
 //版本：V1.0		    							    							  
 //////////////////////////////////////////////////////////////////////////////////
  
-#define OV7670_VSYNC  	PAin(8)			//同步信号检测IO
-#define OV7670_WRST		PDout(6)		//写指针复位
-#define OV7670_WREN		PBout(3)		//写入FIFO使能
-#define OV7670_RCK_H	GPIOB->BSRR=1<<4//设置读数据时钟高电平
-#define OV7670_RCK_L	GPIOB->BRR=1<<4	//设置读数据时钟低电平
-#define OV7670_RRST		PGout(14)  		//读指针复位
-#define OV7670_CS		PGout(15)  		//片选信号(OE)
+#define OV7670_VSYNC  	PEin(3)			//同步信号检测IO
+#define OV7670_WRST		PEout(0)		//写指针复位
+#define OV7670_WREN		PEout(4)		//写入FIFO使能
+#define OV7670_RCK_H	GPIOE->BSRR=1<<6//设置读数据时钟高电平
+#define OV7670_RCK_L	GPIOE->BRR=1<<6	//设置读数据时钟低电平
+#define OV7670_RRST		PEout(2)  		//读指针复位
+#define OV7670_CS		PEout(5)  		//片选信号(OE)
 
 
-#define OV7670_DATA   GPIOC->IDR&0x00FF  					//数据输入端口
+#define OV7670_DATA   GPIOF->IDR&0x00FF  					//数据输入端口
 /////////////////////////////////////////									
 	    				 
 u8   OV7670_Init(void);		  	   		 

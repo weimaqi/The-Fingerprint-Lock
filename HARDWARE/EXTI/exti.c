@@ -59,7 +59,7 @@ void EXTIX_Init(void)
 	EXTI_InitTypeDef EXTI_InitStructure;
  	NVIC_InitTypeDef NVIC_InitStructure;
 
-  KEY_Init();	 //	按键端口初始化
+//  KEY_Init();	 //	按键端口初始化
 
   //GPIOE.2 中断线以及中断初始化配置   下降沿触发
   SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOE,GPIO_PinSource2);
@@ -141,8 +141,8 @@ void EXTI8_Init(void)
 	EXTI_InitTypeDef EXTI_InitStructure;
 	NVIC_InitTypeDef NVIC_InitStructure;
 	
-  //PA8对中断线8
- 	SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOA,GPIO_PinSource8);
+  //PC13对中断线8
+ 	SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOC,GPIO_PinSource13);
 	EXTI_InitStructure.EXTI_Line=EXTI_Line8;
   EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;	
   EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising;
