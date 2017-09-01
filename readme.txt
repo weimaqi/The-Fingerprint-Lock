@@ -5,8 +5,8 @@
 	A2  RXD
 	A3  TXD
 	A6  Ö¸ÎÆËø´¥Ãþ¸ÐÓ¦
-	B12 OLED CLK
-	B13 OLED DIN
+	B12 OLED CLK D0
+	B13 OLED DIN D1
 	B14 OLED RES
 	B15 OLED DC
 	D0  ¾ØÕó¼üÅÌ
