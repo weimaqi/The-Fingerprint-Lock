@@ -2,6 +2,8 @@
 @target: 大一项目
 @version: 标准库版本
 @Pin:
+	A2  RXD
+	A3  TXD
 	A6  指纹锁触摸感应
 	B12 OLED CLK
 	B13 OLED DIN
