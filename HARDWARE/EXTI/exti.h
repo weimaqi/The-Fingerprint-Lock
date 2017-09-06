@@ -20,6 +20,7 @@
 
 void EXTIX_Init(void);	//外部中断初始化	
 void EXTI8_Init(void);	
+extern u8 ov_sta;
 #endif
 
 

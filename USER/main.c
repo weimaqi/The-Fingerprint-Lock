@@ -11,14 +11,21 @@
 #include "oled.h"
 #include "esp8266.h"
 #include "ov7670.h"
+#include "exti.h"
 /***********************************************************/
 
 #define usart2_baund  57600//串口2波特率，根据指纹模块波特率更改
-#define usart3_baund  115200//串口3
+#define usart3_baund  9600//串口3
 SysPara AS608Para;//指纹模块AS608参数
 u16 ValidN;//模块内有效指纹个数
 u8 netpro=1;	//网络模式
-u8 ipbuf[20]="192.168.43.1";//IP地址
+u8 ipbuf[20]="192.168.43.149";//IP地址
+u8 HEADER[] = {
+  66,0x4d,0x36,0x84,0x03,0,0,0,0,0,54,0,0,0,40,0,
+  0,0,64,1,0,0,240,0,0,0,1,0,24,0,0,0,
+  0,0,0,132,3,0,35,46,0,0,35,46,0,0,0,0,
+  0,0,0,0,0,0
+ };
 /***********************************************************/
 
 /***********************************************************/
@@ -430,37 +437,41 @@ void Add_FR(void)   //录指纹
 	}
 }
 
-void RGB565_TO_BMP(u16 RGB565[240][320],u8 *BMP) //230454
-{
- //BMP???
- u8 HEADER[] = {
-  66,77,54,132,3,0,0,0,0,0,54,0,0,0,40,0,
-  0,0,64,1,0,0,240,0,0,0,1,0,24,0,0,0,
-  0,0,0,132,3,0,35,46,0,0,35,46,0,0,0,0,
-  0,0,0,0,0,0
- };
- u32 i = 0;
- u8 RRED,RBLUE,RGREEN;
- u16 COLOR;
- 
- //BMP?????
- for (i = 0;i < 0X36;i++)
- {
-  *BMP++ = *(HEADER + i);
- }
- 
- //????
- for (i = 0;i < 76800;i++)
- {
-  COLOR = *(*(RGB565 + i / 320) + i % 320);
-  RRED = ((COLOR >> 8)) & 0xF8 + 3;
-  RBLUE = ((COLOR >> 3) & 0xFC) + 1;
-  RGREEN = ((COLOR << 3) & 0xF8) + 3;
-  *BMP++ = RBLUE;
-  *BMP++ = RGREEN;
-  *BMP++ = RRED;  
- }
-}
+//void RGB565_TO_BMP(u16 RGB565[240][320]) //230454
+//{
+// //BMP???
+// u8 HEADER[] = {
+//  0x42,0x4d,0x36,0x84,0x03,0,0,0,0,0,54,0,0,0,40,0,
+//  0,0,64,1,0,0,240,0,0,0,1,0,24,0,0,0,
+//  0,0,0,132,3,0,35,46,0,0,35,46,0,0,0,0,
+//  0,0,0,0,0,0
+// };
+// u32 i = 0;
+// u8 RRED,RBLUE,RGREEN;
+// u16 COLOR;
+// 
+// //BMP?????
+// for (i = 0;i < 0X36;i++)
+// {
+////  *BMP++ = *(HEADER + i);
+//	 atk_8266_send_data(HEADER+i,0,0);
+// }
+// 
+// //????
+// for (i = 0;i < 76800;i++)
+// {
+//  COLOR = *(*(RGB565 + i / 320) + i % 320);
+//  RRED = ((COLOR >> 8)) & 0xF8 + 3;
+//  RBLUE = ((COLOR >> 3) & 0xFC) + 1;
+//  RGREEN = ((COLOR << 3) & 0xF8) + 3;
+//	 atk_8266_send_data(&RBLUE,0,0);
+//	 atk_8266_send_data(&RGREEN,0,0);
+//	 atk_8266_send_data(&RRED,0,0);
+////  *BMP++ = RBLUE;
+////  *BMP++ = RGREEN;
+////  *BMP++ = RRED;  
+// }
+//}
 
 
 /***********************************************************/
@@ -471,10 +482,17 @@ int main(void)
 	Led_Init();  //LED初始化
 	Key_Init();  //KEY初始化
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);//设置系统中断优先级分组2
+	u8 RRED,RBLUE,RGREEN;
 	u8 ensure;
-	u32 key;      //按键
+	u16 color;
+	u32 i,j,k;
+	int key;      //按键
 	char str[30];
-	u16 * bmp=(u16 *)mymalloc(SRAMIN,76800*2); //存放bmp color
+	u8 test[]={1,2,3,0,4,5};
+//	u16 ** bmp=(u16 **)mymalloc(SRAMIN,sizeof(u16 *) * 240); //存放bmp color
+//	for(i = 0;i < 240;i++){
+//		bmp[i]=(u16 *)mymalloc(SRAMIN,sizeof(u16) * 320);
+//	}
 	delay_init(168);  	//初始化延时函数
 	KeyBoardIni();
 	OLED_Init();			//初始化OLED  
@@ -483,61 +501,110 @@ int main(void)
 	usart2_init(usart2_baund);//初始化串口2,用于与指纹模块通讯
 	usart3_init(usart3_baund);
 	PS_StaGPIO_Init();	//初始化FR读状态引脚
-//	usmart_dev.init(168);		//初始化USMART
+	usmart_dev.init(168);		//初始化USMART
 	my_mem_init(SRAMIN);		//初始化内部内存池 
 	my_mem_init(SRAMCCM);		//初始化CCM内存
 	W25QXX_Init();				//初始化W25Q128
 	OLED_ShowString(0,0,"1");
 	Esp8266Init();
+	delay_ms(2000);
+	sprintf(str,"AT+CIPSTART=\"TCP\",\"%s\",%s",ipbuf,(u8*)portnum);
+	atk_8266_send_cmd(str,"OK",200);
+	delay_ms(1000);
+	atk_8266_send_cmd("AT+CIPMODE=1","OK",200);      //传输模式为：透传		
+	delay_ms(1000);
+	atk_8266_send_cmd("AT+CIPSEND","OK",200);
 	OLED_ShowString(0,0,"2");
 	OV7670_Init();
 	TIM6_Int_Init(10000,7199);			//10Khz计数频率,1秒钟中断									  
-	EXTI8_Init();						//使能定时器捕获								  
+	EXTIX_Init();						//使能定时器捕获								  
 	OV7670_CS = 0;
 /*****************************/
 
 	Led_Off(2);
 	Led_Off(1);
-	while(PS_HandShake(&AS608Addr)){//与AS608模块握手
-		delay_ms(400);
-		delay_ms(800);
-	}
+//	while(PS_HandShake(&AS608Addr)){//与AS608模块握手
+//		delay_ms(400);
+//		delay_ms(800);
+//	}
 	delay_ms(1000);
 	Led_Off(2);
 	Led_Off(1);
-	ensure=PS_ValidTempleteNum(&ValidN);//读库指纹个数
+//	ensure=PS_ValidTempleteNum(&ValidN);//读库指纹个数
 	if(ensure!=0x00){
-		//ShowErrMessage(ensure);//显示确认码错误信息	
+		//ShowErrMessage(ensure);//显示确认码错误信息
 	}
-	ensure=PS_ReadSysPara(&AS608Para);  //读参数 
+//	ensure=PS_ReadSysPara(&AS608Para);  //读参数
 	if(ensure==0x00)
 	{
 		sprintf(str,"capacity:%d level:%d",AS608Para.PS_max-ValidN,AS608Para.PS_level);
 		OLED_ShowString(0,0, str);
 	}
 	else{
-		//ShowErrMessage(ensure);	
+		//ShowErrMessage(ensure);
 	}
 	char t=' ';
 	PS_Sta=0;
 	delay_ms(100);
+	for(j=0;j<6;j++){
+		while(USART_GetFlagStatus(USART3,USART_FLAG_TC)==RESET);  //等待上次传输完成 
+		USART_SendData(USART3,test[j]); 	 //发送数据到串口3 
+	}
 	while(1){
+		if(ov_sta){
+			OV7670_RRST=0;				//开始复位读指针 
+			OV7670_RCK_L;
+			OV7670_RCK_H;
+			OV7670_RCK_L;
+			OV7670_RRST=1;				//复位读指针结束 
+			OV7670_RCK_H;
+			 for (i = 0;i < 54;i++)
+			 {
+			//  *BMP++ = *(HEADER + i);
+				 while(USART_GetFlagStatus(USART3,USART_FLAG_TC)==RESET);
+				 USART_SendData(USART3,HEADER[i]);
+			 }
+			for(i = 0;i < 240;i++){
+				delay_ms(20);
+				for(j = 0;j < 320;j++){
+					OV7670_RCK_L;
+					color=GPIOC->IDR&0XFF;	//读数据
+					OV7670_RCK_H; 
+					color<<=8;  
+					OV7670_RCK_L;
+					color|=GPIOC->IDR&0XFF;	//读数据
+					OV7670_RCK_H; 
+
+					RRED = ((color >> 8)) & 0xF8 + 3;
+					RBLUE = ((color >> 3) & 0xFC) + 1;
+					RGREEN = ((color << 3) & 0xF8) + 3;
+					while(USART_GetFlagStatus(USART3,USART_FLAG_TC)==RESET);
+					USART_SendData(USART3,RRED);
+					while(USART_GetFlagStatus(USART3,USART_FLAG_TC)==RESET);
+					USART_SendData(USART3,RBLUE);
+					while(USART_GetFlagStatus(USART3,USART_FLAG_TC)==RESET);
+					USART_SendData(USART3,RGREEN);
+				}
+			}
+			ov_sta=0;					//清零帧中断标记
+			ov_frame++; 
+		}
 		key=-1;
 		key=KeyBoardScan();
-		if(key==0){
-			Led_On(2);
-			while(PS_Sta!=1) Led_On(1);
-			delay_ms(600);
-			Led_Off(1);
-			delay_ms(600);
-			key=press_FR();
-			if(key){
-				Led_Off(2);
-			}
-			else{
-				Add_FR();
-				Led_On(1);
-			}
+   	if(key==0){
+//			Led_On(2);
+//			while(PS_Sta!=1) Led_On(1);
+//			delay_ms(600);
+//			Led_Off(1);
+//			delay_ms(600);
+//			key=press_FR();
+//			if(key){
+//				Led_Off(2);
+//			}
+//			else{
+//				Add_FR();
+//				Led_On(1);
+//			}
 		}
 		else if(key==2){
 			Led_On(1);

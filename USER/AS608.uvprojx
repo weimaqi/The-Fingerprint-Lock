@@ -111,8 +111,8 @@
           <SimDlgDllArguments>-pCM4</SimDlgDllArguments>
           <TargetDllName>SARMCM3.DLL</TargetDllName>
           <TargetDllArguments> -MPU</TargetDllArguments>
-          <TargetDlgDll>TCM.DLL</TargetDlgDll>
-          <TargetDlgDllArguments>-pCM4</TargetDlgDllArguments>
+          <TargetDlgDll>DARMSTM.DLL</TargetDlgDll>
+          <TargetDlgDllArguments>-pSTM32F47ZET</TargetDlgDllArguments>
         </DllOption>
         <DebugOption>
           <OPTHX>
@@ -365,7 +365,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F40_41xxx,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\CORE;..\FWLIB\inc;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\USER;..\HARDWARE\LCD;..\HARDWARE\BEEP;..\HARDWARE\KEY;..\HARDWARE\SDIO;..\HARDWARE\SPI;..\HARDWARE\W25QXX;..\HARDWARE\TOUCH;..\HARDWARE\24CXX;..\HARDWARE\IIC;..\HARDWARE\TIMER;..\HARDWARE\SRAM;..\HARDWARE\USART2;..\HARDWARE\AS608;..\MALLOC;..\USMART;..\FATFS\exfuns;..\FATFS\src;..\TEXT;..\HARDWARE\OLED;..\HARDWARE\ESP8266;..\HARDWARE\USART3;..\HARDWARE\EXTI;..\HARDWARE\OV7670</IncludePath>
+              <IncludePath>..\CORE;..\FWLIB\inc;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\USER;..\HARDWARE\LCD;..\HARDWARE\BEEP;..\HARDWARE\KEY;..\HARDWARE\SDIO;..\HARDWARE\SPI;..\HARDWARE\W25QXX;..\HARDWARE\TOUCH;..\HARDWARE\24CXX;..\HARDWARE\IIC;..\HARDWARE\TIMER;..\HARDWARE\SRAM;..\HARDWARE\USART2;..\HARDWARE\AS608;..\MALLOC;..\USMART;..\FATFS\exfuns;..\FATFS\src;..\TEXT;..\HARDWARE\OLED;..\HARDWARE\ESP8266;..\HARDWARE\USART3;..\HARDWARE\EXTI;..\HARDWARE\OV7670;..\FWLIB\inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>

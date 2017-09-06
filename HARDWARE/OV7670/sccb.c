@@ -22,8 +22,8 @@ void SCCB_Init(void)
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13;				 // 端口配置
  	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN; 		 //输入
  	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
- 	GPIO_Init(GPIOE, &GPIO_InitStructure);
- 	GPIO_SetBits(GPIOC,GPIO_Pin_3);						 // 输出高
+ 	GPIO_Init(GPIOC, &GPIO_InitStructure);
+ 	GPIO_SetBits(GPIOC,GPIO_Pin_13);						 // 输出高
 
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;				 // 端口配置
  	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT; 		 
