@@ -103,7 +103,7 @@ void TIM3_PWM_Init(u16 arr,u16 psc)
 	
 
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
- 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);  //使能GPIO外设   //和AFIO复用功能模块时钟使能  ?????                                                                 	 //用于TIM3的CH2输出的PWM通过该LED显示
+	//用于TIM3的CH2输出的PWM通过该LED显示
 	
    //设置该引脚为复用输出功能,输出TIM3 CH2的PWM脉冲波形
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5; //TIM_CH2
@@ -147,7 +147,6 @@ void TIM5_Cap_Init(u16 arr,u16 psc)
    	NVIC_InitTypeDef NVIC_InitStructure;
 
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM5, ENABLE);
- 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);  //使能GPIO外设和AFIO复用功能模块时钟使能
 	
 	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_0;  //PA0 清除之前设置  
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN; //PA0 输入  
@@ -237,7 +236,6 @@ void TIM1_PWM_Init(u16 arr,u16 psc)
 	
 
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1, ENABLE); //使能TIMx外设
- 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);  //使能GPIOA外设时钟使能
 	
  
   //设置该引脚为复用输出功能,输出TIM1 CH1的PWM脉冲波形

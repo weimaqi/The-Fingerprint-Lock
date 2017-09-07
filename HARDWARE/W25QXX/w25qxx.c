@@ -26,9 +26,6 @@ u16 W25QXX_TYPE=W25Q128;	//默认是W25Q128
 void W25QXX_Init(void)
 { 
   GPIO_InitTypeDef  GPIO_InitStructure;
- 
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);//使能GPIOB时钟
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOG, ENABLE);//使能GPIOG时钟
 
 	  //GPIOB14
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_14;//PB14

@@ -15,7 +15,7 @@
 /***********************************************************/
 
 #define usart2_baund  57600//串口2波特率，根据指纹模块波特率更改
-#define usart3_baund  9600//串口3
+#define usart3_baund  19200//串口3
 SysPara AS608Para;//指纹模块AS608参数
 u16 ValidN;//模块内有效指纹个数
 u8 netpro=1;	//网络模式
@@ -67,7 +67,6 @@ void Esp8266Init(){
 
 void KeyBoardIni(){     //矩阵键盘初始化
 	GPIO_InitTypeDef GPIO_InitStructure;
-	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);//使能GPIOD时钟
 	GPIO_InitStructure.GPIO_Pin=GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 ;
 	GPIO_InitStructure.GPIO_Mode=GPIO_Mode_OUT;
 	GPIO_InitStructure.GPIO_OType=GPIO_OType_PP;
@@ -150,7 +149,6 @@ int KeyBoardScan(){
 
 void Led_Init(){    //LED初始化
   GPIO_InitTypeDef  GPIO_InitStructure;
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOF, ENABLE);//使能GPIOF时钟
   //初始化读状态引脚GPIOF
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9|GPIO_Pin_10;
 	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
@@ -192,7 +190,6 @@ void Led_Off(int choice){
 
 void Key_Init(){     //按键初始化
   GPIO_InitTypeDef  GPIO_InitStructure;
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOE, ENABLE);//使能GPIOE时钟
   //初始化读状态引脚GPIOE
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3|GPIO_Pin_4;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;//输入模式
@@ -484,7 +481,7 @@ int main(void)
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);//设置系统中断优先级分组2
 	u8 RRED,RBLUE,RGREEN;
 	u8 ensure;
-	u16 color;
+	u16 color,ColorValue[10];
 	u32 i,j,k;
 	int key;      //按键
 	char str[30];
@@ -494,6 +491,7 @@ int main(void)
 //		bmp[i]=(u16 *)mymalloc(SRAMIN,sizeof(u16) * 320);
 //	}
 	delay_init(168);  	//初始化延时函数
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOE|RCC_AHB1Periph_GPIOB|RCC_AHB1Periph_GPIOC|RCC_AHB1Periph_GPIOF|RCC_AHB1Periph_GPIOG|RCC_AHB1Periph_GPIOA|RCC_AHB1Periph_GPIOD, ENABLE);	 //使能相关端口时钟
 	KeyBoardIni();
 	OLED_Init();			//初始化OLED  
 	OLED_Clear(); 
@@ -515,7 +513,7 @@ int main(void)
 	delay_ms(1000);
 	atk_8266_send_cmd("AT+CIPSEND","OK",200);
 	OLED_ShowString(0,0,"2");
-	OV7670_Init();
+	while(OV7670_Init());
 	TIM6_Int_Init(10000,7199);			//10Khz计数频率,1秒钟中断									  
 	EXTIX_Init();						//使能定时器捕获								  
 	OV7670_CS = 0;
@@ -568,16 +566,17 @@ int main(void)
 				delay_ms(20);
 				for(j = 0;j < 320;j++){
 					OV7670_RCK_L;
-					color=GPIOC->IDR&0XFF;	//读数据
-					OV7670_RCK_H; 
-					color<<=8;  
+					color = OV7670_DATA ;	//读数据
+					OV7670_RCK_H;
+					color<<=8;
 					OV7670_RCK_L;
-					color|=GPIOC->IDR&0XFF;	//读数据
-					OV7670_RCK_H; 
-
+					color|= OV7670_DATA ;	//读数据
+					OV7670_RCK_H;
+					ColorValue[k=(k+1)%10] = color;
 					RRED = ((color >> 8)) & 0xF8 + 3;
 					RBLUE = ((color >> 3) & 0xFC) + 1;
 					RGREEN = ((color << 3) & 0xF8) + 3;
+
 					while(USART_GetFlagStatus(USART3,USART_FLAG_TC)==RESET);
 					USART_SendData(USART3,RRED);
 					while(USART_GetFlagStatus(USART3,USART_FLAG_TC)==RESET);

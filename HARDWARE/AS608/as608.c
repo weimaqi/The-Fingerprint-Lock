@@ -21,7 +21,6 @@ u32 AS608Addr = 0XFFFFFFFF; //默认
 void PS_StaGPIO_Init(void)
 {   
   GPIO_InitTypeDef  GPIO_InitStructure;
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);//使能GPIOA时钟
   //初始化读状态引脚GPIOA
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;//输入模式

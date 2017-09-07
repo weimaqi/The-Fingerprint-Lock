@@ -11,16 +11,36 @@
 //版本：V1.0		    							    							  
 //////////////////////////////////////////////////////////////////////////////////
  
+void SCCB_SDA_IN(void){
+	GPIO_InitTypeDef  GPIO_InitStructure;
+	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_13; 	//PC13 输入 上拉
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ 	GPIO_Init(GPIOC, &GPIO_InitStructure);
+}
+void SCCB_SDA_OUT(void){
+	GPIO_InitTypeDef  GPIO_InitStructure;
+	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_13; 	//PC13 输出上拉
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+	
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ 	GPIO_Init(GPIOC, &GPIO_InitStructure);
+}
+
+
+
 //初始化SCCB接口
 //CHECK OK
 void SCCB_Init(void)
 {			
  	GPIO_InitTypeDef  GPIO_InitStructure;
 
- 	RCC_APB2PeriphClockCmd(RCC_AHB1Periph_GPIOE | RCC_AHB1Periph_GPIOC, ENABLE);	 //使能PB端口时钟
-
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13;				 // 端口配置
- 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN; 		 //输入
+ 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT; 		 //输入
  	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
  	GPIO_Init(GPIOC, &GPIO_InitStructure);
  	GPIO_SetBits(GPIOC,GPIO_Pin_13);						 // 输出高
@@ -108,11 +128,13 @@ u8 SCCB_RD_Byte(void)
 		delay_us(50);
 		SCCB_SCL=1;
 		temp=temp<<1;
-		if(SCCB_READ_SDA)temp++;   
+		if(SCCB_READ_SDA){
+			temp++;   
+		}
 		delay_us(50);
 		SCCB_SCL=0;
 	}	
-	SCCB_SDA_OUT();		//设置SDA为输出    
+	SCCB_SDA_OUT();		//设置SDA为输出
 	return temp;
 } 							    
 //写寄存器
@@ -150,7 +172,6 @@ u8 SCCB_RD_Reg(u8 reg)
   	SCCB_Stop();
   	return val;
 }
-
 
 
 

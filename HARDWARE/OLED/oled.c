@@ -213,7 +213,6 @@ void OLED_DrawBMP(unsigned char x0, unsigned char y0,unsigned char x1, unsigned 
 void OLED_Init(void)
 { 	
  	GPIO_InitTypeDef  GPIO_InitStructure;
- 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);	 //使能B端口时钟
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;	 //PD10推挽输出  
  	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
 	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP; 		 //推挽输出

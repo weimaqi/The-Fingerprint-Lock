@@ -64,7 +64,6 @@ void usart2_init(u32 bound)
 	USART_InitTypeDef USART_InitStructure;
 
 	
-	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA,ENABLE); //使能GPIOA时钟
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2,ENABLE);//使能USART2时钟
 
  	USART_DeInit(USART2);  //复位串口2
