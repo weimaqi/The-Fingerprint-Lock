@@ -21,9 +21,9 @@ u16 ValidN;//模块内有效指纹个数
 u8 netpro=1;	//网络模式
 u8 ipbuf[20]="192.168.43.149";//IP地址
 u8 HEADER[] = {
-  66,0x4d,0x36,0x84,0x03,0,0,0,0,0,54,0,0,0,40,0,
-  0,0,64,1,0,0,240,0,0,0,1,0,24,0,0,0,
-  0,0,0,132,3,0,35,46,0,0,35,46,0,0,0,0,
+  0x42,0x4d,0x36,0x58,0x02,0,0,0,0,0,0x36,0,0,0,0x28,0,
+  0,0,0x40,0x01,0,0,0xf0,0,0,0,0x01,0,0x10,0,0,0,
+  0,0,0,0x58,0x02,0,0x23,0x2e,0,0,0x23,0x2e,0,0,0,0,
   0,0,0,0,0,0
  };
 /***********************************************************/
@@ -481,7 +481,7 @@ int main(void)
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);//设置系统中断优先级分组2
 	u8 RRED,RBLUE,RGREEN;
 	u8 ensure;
-	u16 color,ColorValue[10];
+	u16 color,ColorValue[30];
 	u32 i,j,k;
 	int key;      //按键
 	char str[30];
@@ -514,6 +514,7 @@ int main(void)
 	atk_8266_send_cmd("AT+CIPSEND","OK",200);
 	OLED_ShowString(0,0,"2");
 	while(OV7670_Init());
+	SCCB_WR_Reg(0X71,0x81);
 	TIM6_Int_Init(10000,7199);			//10Khz计数频率,1秒钟中断									  
 	EXTIX_Init();						//使能定时器捕获								  
 	OV7670_CS = 0;
@@ -549,7 +550,8 @@ int main(void)
 		USART_SendData(USART3,test[j]); 	 //发送数据到串口3 
 	}
 	while(1){
-		if(ov_sta){
+		if(ov_sta == 2){
+			OV7670_CS=0;
 			OV7670_RRST=0;				//开始复位读指针 
 			OV7670_RCK_L;
 			OV7670_RCK_H;
@@ -572,19 +574,27 @@ int main(void)
 					OV7670_RCK_L;
 					color|= OV7670_DATA ;	//读数据
 					OV7670_RCK_H;
-					ColorValue[k=(k+1)%10] = color;
-					RRED = ((color >> 8)) & 0xF8 + 3;
-					RBLUE = ((color >> 3) & 0xFC) + 1;
-					RGREEN = ((color << 3) & 0xF8) + 3;
+					ColorValue[k=(k+1)%30] = color;
+//					RRED = ((color >> 8)) & 0xF8 + 3;
+//					RBLUE = ((color >> 3) & 0xFC) + 1;
+//					RGREEN = ((color << 3) & 0xF8) + 3;
 
+//					while(USART_GetFlagStatus(USART3,USART_FLAG_TC)==RESET);
+//					USART_SendData(USART3,RBLUE);
+//					while(USART_GetFlagStatus(USART3,USART_FLAG_TC)==RESET);
+//					USART_SendData(USART3,RGREEN);
+//					while(USART_GetFlagStatus(USART3,USART_FLAG_TC)==RESET);
+//					USART_SendData(USART3,RRED);
 					while(USART_GetFlagStatus(USART3,USART_FLAG_TC)==RESET);
-					USART_SendData(USART3,RRED);
+					USART_SendData(USART3,color&0xff);
 					while(USART_GetFlagStatus(USART3,USART_FLAG_TC)==RESET);
-					USART_SendData(USART3,RBLUE);
-					while(USART_GetFlagStatus(USART3,USART_FLAG_TC)==RESET);
-					USART_SendData(USART3,RGREEN);
+					USART_SendData(USART3,color>>8&0xff);
 				}
 			}
+			OV7670_CS=1; 							 
+			OV7670_RCK_L; 
+			OV7670_RCK_H;
+			EXTI_ClearITPendingBit(EXTI_Line3);  //清除EXTI3线路挂起位
 			ov_sta=0;					//清零帧中断标记
 			ov_frame++; 
 		}

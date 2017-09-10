@@ -211,9 +211,9 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>552</LineNumber>
+          <LineNumber>598</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134234638</Address>
+          <Address>134234918</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -222,7 +222,7 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>D:\Tencent_files\瀛︿範璧勬枡\STM32F4\The-Fingerprint-Lock\USER\main.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression></Expression>
+          <Expression>\\AS608\main.c\598</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -296,6 +296,16 @@
           <WinNumber>1</WinNumber>
           <ItemText>temp</ItemText>
         </Ww>
+        <Ww>
+          <count>14</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>L</ItemText>
+        </Ww>
+        <Ww>
+          <count>15</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>H</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>
@@ -312,6 +322,11 @@
           <count>2</count>
           <WinNumber>2</WinNumber>
           <ItemText>USART3_RX_BUF</ItemText>
+        </Ww>
+        <Ww>
+          <count>3</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>H</ItemText>
         </Ww>
       </WatchWindow2>
       <Tracepoint>

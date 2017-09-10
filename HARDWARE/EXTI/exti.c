@@ -56,13 +56,15 @@ void EXTI3_IRQHandler(void)
 //	{				 
 ////		LED1=!LED1;
 //	}		 
-	
-	OV7670_WRST=0;	//复位写指针		  		 
-	OV7670_WRST=1;	
-	OV7670_WREN=1;	//允许写入FIFO 	 
-	ov_sta++;		//帧中断加1 
-	
-	EXTI_ClearITPendingBit(EXTI_Line3);  //清除EXTI0线路挂起位
+	if(ov_sta<2){
+		if(ov_sta == 0){
+			OV7670_WRST=0;	//复位写指针		  		 
+			OV7670_WRST=1;	
+			OV7670_WREN=1;	//允许写入FIFO 	 
+		}else OV7670_WREN=0;
+		ov_sta++;		//帧中断加1 
+	}
+	EXTI_ClearITPendingBit(EXTI_Line3);  //清除EXTI3线路挂起位
 }
 //外部中断4服务程序
 void EXTI4_IRQHandler(void)
