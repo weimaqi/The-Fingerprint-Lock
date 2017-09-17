@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+	<title>用户表单界面</title>
+	<!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+	<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+	<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<style>
+		body
+		{
+			background-color: #F5F5F5;
+			background-size: 100%;
+		}
+		.container
+		{
+			margin:60px auto;
+		}
+	</style>
+	<script>
+		function check_num()
+		{
+			var x=document.getElementById("exampleInputNum").value;
+			if(x==""||isNaN(x))
+			{
+				alert("请输入正确的学号！");
+			}
+			x=document.getElementById("exampleInputTel").value;
+			if(x==""||isNaN(x))
+			{
+				alert("请输入正确的电话号码！");
+			}
+			x=document.getElementById("exampleInputQQ").value;
+			if(x==""||isNaN(x))
+			{
+				alert("请输入正确的QQ号码！");
+			}
+		}
+	</script>
+</head>
+<body margin="50px auto">
+	<div class="container">
+	<div class="page-header">
+		<h1>嵌入式指纹网络通信指纹锁<small>用户表单</small></h1>
+	</div>
+		<div>
+			<form class="form-horizontal" action="xxx.php">
+				<div class="form-group">
+					<label for="exampleInputName" class="col-sm-2 control-label">姓名</label>
+					<div class="col-sm-5">
+						<input type="text" name="name" class="form-control" id="exampleInputName" placeholder="张三">
+					</div>
+				</div>
+				<br />
+				<div class="form-group">
+					<label for="sex" class="col-sm-2 control-label">性别</label>
+					<label for="sex" class="radio-inline"><input type="radio" name="sex" value="M">男</label>
+					<label for="sex" class="radio-inline"><input type="radio" name="sex" value="F">女</label>
+				</div>
+				<br />
+				<br />
+				<div class="form-group">
+					<label for="exampleInputTel" class="col-sm-2 control-label">电话</label>
+					<div class="col-sm-5">
+						<input type="text" name="tel" class="form-control" id="exampleInputTel" placeholder="139xxxxxxxx">
+					</div>
+				</div>
+				<br />
+				<div class="form-group">
+					<label for="exampleInputQQ" class="col-sm-2 control-label">QQ</label>
+					<div class="col-sm-5">
+						<input type="text" name="QQ" class="form-control" id="exampleInputQQ" placeholder="1000000">
+					</div>
+				</div>
+				<br />
+				<div class="form-group">
+					<label for="exampleInputQQ" class="col-sm-2 control-label">邮箱</label>
+					<div class="col-sm-5">
+						<input type="email" name="email" class="form-control" id="exampleInputQQ" placeholder="helloworld@xxx.com">
+					</div>
+				</div>
+				<br />
+				<div class="form-group">
+				    <div class="col-sm-offset-2 col-sm-10">
+				      <button type="submit" class="btn btn-primary" onclick="check_num()">提交</button>
+				      <a href="homepage.html"><button type="button" class="btn btn-warning">返回首页</button></a>
+				    </div>
+			  </div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

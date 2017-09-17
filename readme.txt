@@ -11,6 +11,7 @@
 	F5
 	F6
 	F7
+	F9    PWMÐÅºÅ
 	D0-4  KEY
 	F9-10 LED
 	C6  D0  

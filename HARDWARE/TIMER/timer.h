@@ -22,4 +22,5 @@ void TIM3_PWM_Init(u16 arr,u16 psc);
 void TIM5_Cap_Init(u16 arr,u16 psc);
 void TIM1_PWM_Init(u16 arr,u16 psc);
 void TIM6_Int_Init(u16 arr,u16 psc);
+void TIM14_PWM_Init(u32 arr,u32 psc);
 #endif

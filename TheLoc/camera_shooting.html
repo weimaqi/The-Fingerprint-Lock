@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+	<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+	<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<script>
+		setInterval(test,700); 
+		var array=new Array(); 
+		var index=0; 
+		var array= new Array("images/0.jpeg","images/1.jpeg","images/2.jpeg","images/3.jpeg","images/4.jpeg","images/5.jpeg","images/6.jpeg","images/7.jpeg","images/8.jpeg","images/9.jpeg","images/10.jpeg","images/11.jpeg","images/12.jpeg","images/13.jpeg","images/14.jpeg","images/15.jpeg","images/16.jpeg","images/17.jpeg","images/18.jpeg","images/19.jpeg","images/20.jpeg","images/21.jpeg","images/22.jpeg","images/23.jpeg","images/24.jpeg","images/25.jpeg","images/26.jpeg","images/27.jpeg","images/28.jpeg","images/29.jpeg","images/30.jpeg","images/31.jpeg","images/32.jpeg","images/33.jpeg","images/34.jpeg","images/35.jpeg","images/36.jpeg","images/37.jpeg","images/38.jpeg","images/39.jpeg","images/40.jpeg","images/41.jpeg","images/42.jpeg","images/43.jpeg","images/44.jpeg","images/45.jpeg","images/46.jpeg","images/47.jpeg","images/48.jpeg","images/49.jpeg","images/50.jpeg","images/51.jpeg","images/52.jpeg","images/53.jpeg","images/54.jpeg","images/55.jpeg","images/56.jpeg","images/57.jpeg","images/58.jpeg","images/59.jpeg","images/60.jpeg","images/61.jpeg","images/62.jpeg","images/63.jpeg","images/64.jpeg","images/65.jpeg","images/66.jpeg","images/67.jpeg","images/68.jpeg","images/69.jpeg","images/70.jpeg","images/71.jpeg","images/72.jpeg","images/73.jpeg","images/74.jpeg","images/75.jpeg","images/76.jpeg","images/77.jpeg","images/78.jpeg","images/79.jpeg","images/80.jpeg","images/81.jpeg","images/82.jpeg","images/83.jpeg","images/84.jpeg","images/85.jpeg","images/86.jpeg","images/87.jpeg","images/88.jpeg","images/89.jpeg","images/90.jpeg","images/91.jpeg","images/92.jpeg","images/93.jpeg","images/94.jpeg","images/95.jpeg","images/96.jpeg","images/97.jpeg","images/98.jpeg"); 
+		function test() 
+		{ var myimg=document.getElementById("imgs"); 
+		if(index==array.length-1) 
+		{ index=0; }else{ index++; } 
+		myimg.src=array[index]; 
+		} 
+	</script>
+</head>
+<body>
+	<div class="container">
+
+	<nav class="navbar navbar-default">
+	  <div class="container-fluid">
+	    <!-- Brand and toggle get grouped for better mobile display -->
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+	        <span class="sr-only">Toggle navigation</span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
+	      <a class="navbar-brand" href="#" class="active">摄像实况<span class="sr-only">(current)</span></a>
+	    </div>
+
+	    <!-- Collect the nav links, forms, and other content for toggling -->
+	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	      <ul class="nav navbar-nav">
+	        <li><a href="homepage.html">首页</a></li>
+	        <li><a href="form.html">用户注册</a></li>
+	        
+	      </ul>
+	      
+	    </div><!-- /.navbar-collapse -->
+	  </div><!-- /.container-fluid -->
+	</nav>
+
+		<br>
+		<br>
+		<div class="row">
+			<div class="col-xs-6 col-md-3" float="left">
+				<a href="#" class="thumbnail" onload="ImageMove()">
+					<img id="imgs" src="images/0.jpeg" width="90%">
+				</a>				
+			</div>
+			<div class="panel panel-default col-xs-6 col-md-6" float="right">
+			  <div class="panel-heading">摄像头模块(OV2640)</div>
+			  <div class="panel-body">
+			    OV2640是OmniVision公司生产的一颗1/4寸的CMOS UXGA（1632*1232）图像传感器。该传感器体积小、工作电压低，提供单片UXGA摄像头和影像处理器的所有功能。通过SCCB 总线控制，可以输出整帧、子采样、缩放和取窗口等方式的各种分辨率8/10位影像数据。UXGA最高15帧/秒（SVGA可达30帧，CIF可达60帧）。
+			  </div>
+			  <a href="pass.txt"><button type="button" class="btn btn-primary">点击获取密码</button></a>
+			</div>
+			<br>
+	
+		</div>
+				
+	</div>
+
+</body>
+</html>

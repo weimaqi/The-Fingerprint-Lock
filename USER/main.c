@@ -521,6 +521,7 @@ int press_FR(void)
 	u8 ensure,i=0;
 	int key=-1;
 	char *str,pw[]={0,0,0,0,0};
+	str=mymalloc(SRAMIN,100);
 	ensure=PS_GetImage();
 	LCD_Clear(WHITE);
 	LCD_ShowString(30,50,210,16,16,"Input by keyboard please");
@@ -541,7 +542,6 @@ int press_FR(void)
 				{				
 	//				LCD_Fill(0,100,lcddev.width,160,WHITE);
 					LCD_ShowString(30,50,200,16,16,"Right fingerprint");
-					str=mymalloc(SRAMIN,2000);
 					sprintf(str,"Person,ID:%d  Score:%d",seach.pageID,seach.mathscore);
 					LCD_ShowString(30,70,200,16,16,str);
 					myfree(SRAMIN,str);
@@ -555,8 +555,10 @@ int press_FR(void)
 		 BEEP=0;//关闭蜂鸣器
 		 delay_ms(600);
 		 LCD_Fill(0,100,lcddev.width,160,WHITE);
+		myfree(SRAMIN,str);
 		return 0;
 		}
+		myfree(SRAMIN,str);
 		return 0;
 	}
 	else if(key == 2){
@@ -565,18 +567,18 @@ int press_FR(void)
 			delay_ms(600);
 			LCD_ShowString(30,70,210,16,16,password);
 			sprintf(str,"Please input the %dth number",i);
-			LCD_ShowString(30,50,210,16,16,str);
+			LCD_ShowString(30,90,210,16,16,str);
 			key = -1;
 			i++;
 			while(key==-1) key=KeyBoardScan();
 			pw[i-1]=key;
 		}
 		if(pw[0]+48==password[0] && pw[0]+48==password[0] && pw[0]+48==password[0] && pw[0]+48==password[0]){
-			LCD_ShowString(30,90,210,16,16,"The pw is right");
+			LCD_ShowString(30,110,210,16,16,"The pw is right");
 			return 1;
 		}
 		else{
-			LCD_ShowString(30,90,210,16,16,"The pw is wrong");
+			LCD_ShowString(30,110,210,16,16,"The pw is wrong");
 			return 0;
 		}
 	}
@@ -593,6 +595,8 @@ int main(void)
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);//设置系统中断优先级分组2
 	u8 ensure;
 	u32 i,j;
+	char *strr;
+	SearchResult seach;
 	int key;      //按键
 	char str[30];
 	u8 test[]={1,2,3,0,4,5};
@@ -614,6 +618,8 @@ int main(void)
 	usmart_dev.init(168);		//初始化USMART
 	my_mem_init(SRAMIN);		//初始化内部内存池 
 	my_mem_init(SRAMCCM);		//初始化CCM内存
+	TIM14_PWM_Init(20000-1,84-1);
+	TIM14->CCR1=1100;
 	W25QXX_Init();				//初始化W25Q128
 //	Esp8266Init();
 	delay_ms(2000);
@@ -719,6 +725,39 @@ int main(void)
 		}
 		else if(key==2){
 			LCD_ShowString(30,210,210,16,16,"You are here.");
+		}
+		if(PS_Sta){
+				ensure=PS_GetImage();
+				if(ensure==0x00)//获取图像成功 
+				{	
+				BEEP=1;//打开蜂鸣器	
+				ensure=PS_GenChar(CharBuffer1);
+				if(ensure==0x00) //生成特征成功
+				{		
+					BEEP=0;//关闭蜂鸣器	
+					ensure=PS_HighSpeedSearch(CharBuffer1,0,AS608Para.PS_max,&seach);
+					if(ensure==0x00)//搜索成功
+					{				
+		//				LCD_Fill(0,100,lcddev.width,160,WHITE);
+						LCD_ShowString(30,50,200,16,16,"Right fingerprint");
+						strr=mymalloc(SRAMIN,2000);
+						sprintf(str,"Person,ID:%d  Score:%d",seach.pageID,seach.mathscore);
+						LCD_ShowString(30,70,200,16,16,str);
+						myfree(SRAMIN,str);
+						LCD_Clear(WHITE);
+						TIM14->CCR1=1900;
+						delay_ms(3000);
+						TIM14->CCR1=1100;
+					}
+					else 
+						ShowErrMessage(ensure);
+				}
+				else
+					ShowErrMessage(ensure);
+			 BEEP=0;//关闭蜂鸣器
+			 delay_ms(600);
+			 LCD_Fill(0,100,lcddev.width,160,WHITE);
+			}
 		}
 	}
 }

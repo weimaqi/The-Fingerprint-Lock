@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	<meta charset="UTF-8">
+	<title>log_in</title>
+	<!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+	<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+	<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<style>
+		body{
+			background: url(images/006.jpg) no-repeat fixed center;
+			background-size: 100%;
+		}
+		.box1{
+			width:500px;
+			height:300px;
+			background-color:white;
+			position:absolute;
+			left:30%;
+			top:50%;
+			margin-top:-190px;
+		}
+		.small_box{
+			width:400px;
+			height:200px;
+			position:absolute;
+			left:10%;
+			top:20%;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="box1">
+			<div class="small_box">
+				<p>用户名：</p>
+				<input type="text" name="name" class="form-control" id="username" placeholder="username">
+				<p>密码：</p>
+				<input type="password" name="password" class="form-control" placeholder="password">
+				<br>
+				<a href="homepage.html"><button type="submit" class="btn btn-primary">登陆系统</button></a>
+				<a href="form.html"><button type="button" class="btn btn-warning">用户注册</button></a>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>
