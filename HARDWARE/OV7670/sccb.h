@@ -13,10 +13,10 @@
 
 
 //IO操作函数
-#define SCCB_SCL    		PEout(1)	 	//SCL
-#define SCCB_SDA    		PCout(13) 		//SDA
+#define SCCB_SCL    		PDout(6)	 	//SCL
+#define SCCB_SDA    		PDout(7) 		//SDA
 
-#define SCCB_READ_SDA    	PCin(13)  		//输入SDA    
+#define SCCB_READ_SDA    	PDin(7)  		//输入SDA    
 #define SCCB_ID   			0X42  			//OV7670的ID
 
 ///////////////////////////////////////////

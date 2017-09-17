@@ -2,61 +2,35 @@
 #include "sccb.h"
 #include "delay.h"
 //////////////////////////////////////////////////////////////////////////////////	 
-//本程序参考自网友guanfu_wang代码。
-//ALIENTEK精英STM32开发板V3
-//SCCB 驱动代码	   
+//本程序只供学习使用，未经作者许可，不得用于其它任何用途
+//ALIENTEK STM32F407开发板
+//OV系列摄像头 SCCB 驱动代码	   
 //正点原子@ALIENTEK
 //技术论坛:www.openedv.com
-//创建日期:2015/1/18
-//版本：V1.0		    							    							  
-//////////////////////////////////////////////////////////////////////////////////
- 
-void SCCB_SDA_IN(void){
-	GPIO_InitTypeDef  GPIO_InitStructure;
-	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_7; 	//PC13 输入 上拉
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
-	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
-	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
- 	GPIO_Init(GPIOD, &GPIO_InitStructure);
-}
-void SCCB_SDA_OUT(void){
-	GPIO_InitTypeDef  GPIO_InitStructure;
-	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_7; 	//PC13 输出上拉
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
-	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
-	
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
- 	GPIO_Init(GPIOD, &GPIO_InitStructure);
-}
+//创建日期:2014/5/14
+//版本：V1.0
+//版权所有，盗版必究。
+//Copyright(C) 广州市星翼电子科技有限公司 2014-2024
+//All rights reserved									  
+////////////////////////////////////////////////////////////////////////////////// 
 
-
-
-//初始化SCCB接口
-//CHECK OK
+//初始化SCCB接口 
 void SCCB_Init(void)
-{			
- 	GPIO_InitTypeDef  GPIO_InitStructure;
+{				
+  GPIO_InitTypeDef  GPIO_InitStructure;
 
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_7;				 // 端口配置
- 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT; 		 //输入
-	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP; 
-	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
- 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
- 	GPIO_Init(GPIOD, &GPIO_InitStructure);
- 	GPIO_SetBits(GPIOD,GPIO_Pin_7);						 // 输出高
-
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;				 // 端口配置
- 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT; 		 
-	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP; 	
-	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;	//推挽输出
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
- 	GPIO_Init(GPIOD, &GPIO_InitStructure);
- 	GPIO_SetBits(GPIOD,GPIO_Pin_6);						 // 输出高
-
+  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);//使能GPIOD时钟
+  //GPIOF9,F10初始化设置
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6|GPIO_Pin_7;//PD6,7 推挽输出
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;  //PD6,7 推挽输出
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;//推挽输出
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;//100MHz
+  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;//上拉
+  GPIO_Init(GPIOD, &GPIO_InitStructure);//初始化
+ 
+	GPIO_SetBits(GPIOD,GPIO_Pin_6|GPIO_Pin_7);
 	SCCB_SDA_OUT();	   
-}
+}			 
 
 //SCCB起始信号
 //当时钟为高的时候,数据线的高到低,为SCCB起始信号
@@ -132,13 +106,11 @@ u8 SCCB_RD_Byte(void)
 		delay_us(50);
 		SCCB_SCL=1;
 		temp=temp<<1;
-		if(SCCB_READ_SDA){
-			temp++;   
-		}
+		if(SCCB_READ_SDA)temp++;   
 		delay_us(50);
 		SCCB_SCL=0;
 	}	
-	SCCB_SDA_OUT();		//设置SDA为输出
+	SCCB_SDA_OUT();		//设置SDA为输出    
 	return temp;
 } 							    
 //写寄存器
@@ -176,6 +148,7 @@ u8 SCCB_RD_Reg(u8 reg)
   	SCCB_Stop();
   	return val;
 }
+
 
 
 

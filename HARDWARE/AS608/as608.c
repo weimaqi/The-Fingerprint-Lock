@@ -22,11 +22,11 @@ void PS_StaGPIO_Init(void)
 {   
   GPIO_InitTypeDef  GPIO_InitStructure;
   //初始化读状态引脚GPIOA
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;//输入模式
 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;//下拉模式
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;//100MHz
-  GPIO_Init(GPIOA, &GPIO_InitStructure);//初始化GPIO	
+  GPIO_Init(GPIOB, &GPIO_InitStructure);//初始化GPIO	
 }
 //串口发送一个字节
 static void MYUSART_SendData(u8 data)

@@ -4,6 +4,7 @@
 #include "stdio.h"	 	 
 #include "string.h"	  
 #include "timer.h"
+#include "lcd.h"
 //////////////////////////////////////////////////////////////////////////////////	 
 //本程序只供学习使用，未经作者许可，不得用于其它任何用途
 //ALIENTEK STM32F4开发板
@@ -49,6 +50,7 @@ void USART3_IRQHandler(void)
 		}else 
 		{
 			USART3_RX_STA|=1<<15;					//强制标记接收完成
+			LCD_ShowString(30,250,200,16,16,USART3_RX_BUF);	
 		} 
 	}  	
  }										 

@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include "stm32f4xx.h" 
 
-#define PS_Sta   PAin(6)//¶ÁÖ¸ÎÆÄ£¿é×´Ì¬Òý½Å
+#define PS_Sta   PBin(13)//¶ÁÖ¸ÎÆÄ£¿é×´Ì¬Òý½Å
 #define CharBuffer1 0x01
 #define CharBuffer2 0x02
 
